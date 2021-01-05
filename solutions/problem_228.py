@@ -31,3 +31,31 @@ def get_largest(nums, prefix=""):
 
 # Tests
 assert get_largest([10, 7, 76, 415]) == 77641510
+
+
+"""
+Another way
+"""
+
+def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        numstr = sorted([str(num) for num in nums])
+        # go through the list to rearrage the order
+        curr = [numstr[0]]
+        for i in range(1, len(nums)):
+            if curr[-1] +numstr[i] > numstr[i]+curr[-1]:
+                numstr[i-len(curr)] = numstr[i]
+                numstr[i] = curr[-1]
+            elif curr[-1] +numstr[i] == numstr[i]+curr[-1]:
+                curr.append(numstr[i])
+            else:
+                curr = [numstr[i]]
+        
+        result = ''.join(reversed(numstr)) 
+        if int(result)>0:
+            return result
+        else:
+            return '0'
