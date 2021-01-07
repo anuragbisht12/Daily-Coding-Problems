@@ -20,6 +20,7 @@ def correct_braces(braces):
         if not open_braces:
             break
 
+    print(braces[open_braces:]," or ",braces[:i+1] + correct_braces(braces[i+1:]))
     # if there is one, process the rest separately, else truncate the excess opening braces
     return braces[open_braces:] if open_braces else braces[:i+1] + correct_braces(braces[i+1:])
 
@@ -29,7 +30,7 @@ assert correct_braces("()(()") == "()()"
 assert correct_braces("()(()))") == "()(())"
 assert correct_braces(")(())") == "(())"
 assert correct_braces("())(") == "()"
-
+# assert correct_braces("))()(") == "()()()()"
 
 
 """
