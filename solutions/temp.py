@@ -1,14 +1,31 @@
-def solve(array):
-    return solve_helper(array,0,0,0)
+def solve(st):
+  return solve_helper(st, 0, len(st)-1)
 
-def solve_helper(array,current_idx,sum1,sum2,list1=list(),list2=list()):
+def solve_helper(st, start_index, end_index):
+    # we don't need to cut the string if it is a palindrome
+    if start_index >= end_index or is_palindrome(st, start_index, end_index):
+        return 0
 
-    if current_idx==len(array):
-        return (abs(sum1-sum2),list1,list2)
+    # at max, we need to cut the string into its 'length-1' pieces
+    min_cuts=end_index-start_index
+    for i in range(start_index,end_index+1):
+        if is_palindrome(st,start_index,i):
+            # we can cut here as we have a palindrome from 'startIndex' to 'i'
+            min_cuts=min(min_cuts,1+solve_helper(st,i+1,end_index))
 
-    df1=solve_helper(array,current_idx+1,sum1+array[current_idx],sum2,list1+[array[current_idx]],list2)
-    df2=solve_helper(array,current_idx+1,sum1,sum2+array[current_idx],list1,list2 + [array[current_idx]])
+    return min_cuts
 
-    return min(df1,df2,key=lambda x:x[0])
 
-print(solve([5, 10, 15, 20, 25])[1:])
+def is_palindrome(st, x, y):
+  while (x < y):
+    if st[x] != st[y]:
+      return False
+    x += 1
+    y -= 1
+  return True
+
+print(solve("racecarannakayak"))
+#   print(solve("cdpdd"))
+#   print(solve("pqr"))
+#   print(solve("pp"))
+#   print(solve("madam"))
