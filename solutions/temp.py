@@ -1,65 +1,14 @@
-def correct_braces(braces):
-    # get rid of all initial closing braces
-    i = 0
-    while i < len(braces) and braces[i] == ')':
-        i += 1
-    braces = braces[i:]
+def solve(array):
+    return solve_helper(array,0,0,0)
 
-    # base case for recursion
-    if not braces:
-        return ''
+def solve_helper(array,current_idx,sum1,sum2,list1=list(),list2=list()):
 
-    # check for the first balanced group of braces
-    open_braces = 0
-    for i, brace in enumerate(braces):
-        if brace == '(':
-            open_braces += 1
-        elif brace == ')':
-            open_braces -= 1
+    if current_idx==len(array):
+        return (abs(sum1-sum2),list1,list2)
 
-        if not open_braces:
-            break
+    df1=solve_helper(array,current_idx+1,sum1+array[current_idx],sum2,list1+[array[current_idx]],list2)
+    df2=solve_helper(array,current_idx+1,sum1,sum2+array[current_idx],list1,list2 + [array[current_idx]])
 
-    print(braces[open_braces:]," or ",braces[:i+1] + correct_braces(braces[i+1:]))
-    # if there is one, process the rest separately, else truncate the excess opening braces
-    return braces[open_braces:] if open_braces else braces[:i+1] + correct_braces(braces[i+1:])
+    return min(df1,df2,key=lambda x:x[0])
 
-
-# Tests
-assert correct_braces("()(()") == "()()"
-assert correct_braces("()(()))") == "()(())"
-assert correct_braces(")(())") == "(())"
-assert correct_braces("())(") == "()"
-# assert correct_braces("))()(") == "()()()()"
-
-
-"""
-
-Aother way
-"""
-
-def correct_braces1(string):
-
-    new_string=[]
-    counter=0
-
-    for char in string:
-        if char=='(':
-            new_string.append(char)
-            counter +=1
-        else:
-            if counter ==0:
-                new_string.append('(')
-            else:
-                counter -=1
-            
-            new_string.append(')')
-
-    while counter>0:
-        new_string.append(')')
-        counter -=1
-
-
-    return "".join(new_string)
-
-print(correct_braces1("))()("))
+print(solve([5, 10, 15, 20, 25])[1:])
