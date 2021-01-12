@@ -1,31 +1,20 @@
-def solve(st):
-  return solve_helper(st, 0, len(st)-1)
+def find_pallindrome(string_list):
+  return_indices=[]
+  for i in range(len(string_list)):
+    for j in range(len(string_list)):
+      print(string_list[i],string_list[j],is_pallindrome(string_list[i]+string_list[j]))
+      if is_pallindrome(string_list[i]+string_list[j]):
+        return_indices.append((i,j))
 
-def solve_helper(st, start_index, end_index):
-    # we don't need to cut the string if it is a palindrome
-    if start_index >= end_index or is_palindrome(st, start_index, end_index):
-        return 0
-
-    # at max, we need to cut the string into its 'length-1' pieces
-    min_cuts=end_index-start_index
-    for i in range(start_index,end_index+1):
-        if is_palindrome(st,start_index,i):
-            # we can cut here as we have a palindrome from 'startIndex' to 'i'
-            min_cuts=min(min_cuts,1+solve_helper(st,i+1,end_index))
-
-    return min_cuts
+  return return_indices
 
 
-def is_palindrome(st, x, y):
-  while (x < y):
-    if st[x] != st[y]:
-      return False
-    x += 1
-    y -= 1
-  return True
+def is_pallindrome(s1):
+  return s1==s1[::-1]
 
-print(solve("racecarannakayak"))
-#   print(solve("cdpdd"))
-#   print(solve("pqr"))
-#   print(solve("pp"))
-#   print(solve("madam"))
+
+print(find_pallindrome(["code", "edoc", "da", "d"]))
+
+
+
+
